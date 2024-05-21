@@ -1,0 +1,36 @@
+<div
+  #dropzoneElement
+  class="dropzone container-fluid text-center bg-secondary-subtle rounded py-5 tw-cursor-pointer"
+>
+  <div *ngIf="!this.dragOver">
+    <div class="tw-text-9xl mb-5 ">
+      <i class="bi bi-cloud-arrow-up-fill"></i>
+    </div>
+    <p>
+      Drag and drop your XLSX file here
+    </p>
+    <p class="tw-font-bold">
+      OR
+    </p>
+    <div>
+      <label for="dropzone-file" class="btn btn-primary">Select File</label>
+      <input
+        #inputElement
+        class="d-none"
+        type="file"
+        id="dropzone-file"
+        name="file"
+        accept=".xlsx"
+        (change)="this.onChange($event)"
+      >
+    </div>
+  </div>
+  <div *ngIf="this.dragOver">
+    <div class="tw-text-9xl mb-5 ">
+      <i class="bi bi-cloud-arrow-up-fill"></i>
+    </div>
+    <p>
+      Drop your XLSX file here
+    </p>
+  </div>
+</div>

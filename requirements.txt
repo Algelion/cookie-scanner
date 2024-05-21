@@ -1,0 +1,10 @@
+pandas
+selenium
+Flask
+flask-cors
+xlsxwriter
+openpyxl
+gunicorn
+pyvirtualdisplay
+xvfbwrapper
+xlwt

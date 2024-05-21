@@ -1,0 +1,7 @@
+.dropzone {
+  min-height: 400px;
+  max-height: 400px;
+}
+.dropzone.dragover {
+  filter: brightness(1.5);
+}

@@ -1,0 +1,40 @@
+<table class="mb-0 table table-striped table-bordered table-hover tw-w-full">
+  <thead>
+    <tr>
+      <th
+        class="table-header"
+        *ngFor="let header of this.headers"
+        [class.text-center]="header.centered"
+      >
+        <span>{{ header.name }}</span>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr
+      *ngFor="let row of this.data"
+      [class.table-success]="row.isDone"
+      [class.table-warning]="row.isScanning"
+      [class.table-danger]="row.isError"
+    >
+      <td
+        *ngFor="let header of this.headers"
+        [class.text-center]="header.centered"
+      >
+        <a *ngIf="header.name == 'Website'" [href]="row.website">
+          {{ row.website }}
+        </a>
+        <span *ngIf="header.name != 'Website'">
+          {{ row.get(header.name.toLowerCase()) }}
+        </span>
+
+        <span *ngIf="header.name == ''" class="status-icon" >
+          <i *ngIf="row.isDone" class="bi bi-check-circle-fill"></i>
+          <i *ngIf="row.isError" class="bi-x-circle-fill"></i>
+          <div *ngIf="row.isScanning" class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </span>
+      </td>
+    </tr>
+</table>

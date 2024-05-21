@@ -1,0 +1,12 @@
+<div class="mb-3 input-group">
+  <input
+    type="text"
+    class="form-control border-primary"
+    aria-describedby="upload-button"
+    placeholder="Enter a URL"
+    [(ngModel)]="this.urls"
+  >
+  <button id="upload-button" class="btn btn-primary" (click)="this.onButtonClicked()">
+    Submit
+  </button>
+</div>

@@ -1,0 +1,87 @@
+<table class="mb-0 table table-striped table-hover table-bordered tw-w-full">
+  <thead>
+    <tr>
+      <th
+        class="table-header"
+        *ngFor="let header of this.headers"
+        [class.text-center]="header.centered"
+        (click)="this.sort(header.name)"
+      >
+        <span>{{ header.name }}</span>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr
+      *ngFor="let row of this.data; let rowIndex = index"
+      [id]="'filter-table-row-' + row.get('#')"
+    >
+      <td
+        *ngFor="let header of this.headers"
+        [class.text-center]="header.centered"
+      >
+        <span class="text-center" [ngSwitch]="row.type(header.name)">
+          <button
+            *ngSwitchCase="'none'"
+            class="btn btn-danger"
+            (click)="this.removeRow(rowIndex)"
+            [disabled]="this.removeButtonDisabled"
+          >
+            <i class="bi bi-trash-fill"></i>
+          </button>
+          <select
+            *ngSwitchCase="'SearchBy'"
+            class="form-control"
+            (change)="this.onCellChange(rowIndex, header.name, $event)"
+          >
+            <option
+              *ngFor="let option of this.searchByOptions"
+              [value]="option"
+              [selected]="option == row.get(header.name)"
+            >
+              {{ option | titlecase }}
+            </option>
+          </select>
+          <select
+            *ngSwitchCase="'SearchScope'"
+            class="form-control"
+            (change)="this.onCellChange(rowIndex, header.name, $event)"
+          >
+            <option
+              *ngFor="let option of this.searchScopeOptions"
+              [value]="option"
+              [selected]="option == row.get(header.name)">
+              {{ option | titlecase }}
+            </option>
+          </select>
+          <span *ngSwitchCase="'id'">
+            {{ row.get(header.name) }}
+          </span>
+          <input
+            *ngSwitchDefault
+            class="form-control"
+            [type]="row.type(header.name)"
+            [value]="row.get(header.name)"
+            (change)="this.onCellChange(rowIndex, header.name, $event)"
+          />
+        </span>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<nav class="nav my-3 flex-row-reverse">
+  <button
+    class="btn btn-outline-danger"
+    (click)="this.removeLastRow()"
+    [disabled]="this.removeButtonDisabled"
+  >
+    <i class="bi bi-trash-fill"></i>
+  </button>
+  <button
+    class="mx-2 btn btn-outline-primary"
+    (click)="this.addEmptyRow()"
+  >
+    <i class="bi bi-plus-circle-fill"></i>
+  </button>
+</nav>

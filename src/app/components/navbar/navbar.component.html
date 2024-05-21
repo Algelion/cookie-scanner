@@ -1,0 +1,53 @@
+<nav class="fixed-top navbar bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/">{{ this.title }}</a>
+    <div
+      class="me-auto"
+      *ngIf="this.scanToolsVisible"
+    >
+      <button
+        class="mx-2 btn btn-success"
+        (click)="this.onStartScanButtonClicked()"
+        [disabled]="this.startScanButtonDisabled"
+      >
+        <i class="fs-5 p-0 bi bi-play-fill"></i>
+      </button>
+      <button
+        class="btn btn-danger"
+        (click)="this.onAbortScanButtonClicked()"
+        [disabled]="this.abortScanButtonDisabled"
+      >
+        <i class="fs-5 p-0 bi bi-stop-fill"></i>
+      </button>
+    </div>
+    <div>
+      <button
+        class="btn btn-outline-info"
+        (click)="this.onDownloadButtonClicked()"
+        [disabled]="this.downloadButtonDisabled"
+      >
+        <i class="fs-5 p-0 bi bi-download"></i>
+      </button>
+      <label *ngIf="!this.uploadButtonDisabled" class="mx-2 btn btn-outline-info" for="file-uploader">
+        <i class="fs-5 p-0 bi bi-upload"></i>
+      </label>
+      <button
+        *ngIf="this.uploadButtonDisabled"
+        class="mx-2 btn btn-outline-info"
+        [disabled]="this.uploadButtonDisabled"
+      >
+        <i class="fs-5 p-0 bi bi-upload"></i>
+      </button>
+      <input
+        id="file-uploader"
+        class="d-none"
+        type="file"
+        (change)="this.onUploadButtonChanged($event)"
+        [disabled]="this.uploadButtonDisabled"
+      />
+      <a class="btn btn-outline-info" routerLink="settings">
+        <i class="fs-5 p-0 bi bi-gear-fill"></i>
+      </a>
+    </div>
+  </div>
+</nav>

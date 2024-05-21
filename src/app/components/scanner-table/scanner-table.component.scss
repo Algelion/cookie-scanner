@@ -1,0 +1,19 @@
+.table-header:hover {
+  cursor: pointer;
+  filter: brightness(1.4);
+}
+
+.spinner-border {
+  width: 20px;
+  height: 20px;
+}
+
+.table-success .status-icon {
+  color: #28a745;
+}
+.table-danger .status-icon {
+  color: #dc3545;
+}
+.table-warning .status-icon {
+  color: #ffc107;
+}
