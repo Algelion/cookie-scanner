@@ -7,15 +7,15 @@ import { NotFoundPageComponent } from "./pages/not-found-page/not-found-page.com
 
 const routes: Routes = [
     {
-        path: 'cookie_scanner',
+        path: '',
         component: UploadPageComponent
     },
     {
-        path: 'cookie_scanner/settings',
+        path: 'settings',
         component: SettingsPageComponent
     },
     {
-        path: 'cookie_scanner/scanner',
+        path: 'scanner',
         component: ScannerPageComponent
     },
     {

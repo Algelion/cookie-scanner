@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
+from selenium.common.exceptions import TimeoutException
 
 from src.server.common import SearchResult, CookieFilter, to_search_by
 
@@ -86,9 +87,12 @@ class CookieScanner:
                 return self.__get_page_elements_by_keywords__(search_by, cookie_filter)
 
     def __presence_of_all_page_elements_by_tag_name_located__(self, cookie_filter):
-        return WebDriverWait(self.driver, cookie_filter.timeout).until(
-            ec.presence_of_all_elements_located((By.TAG_NAME, cookie_filter.element)),
-            message=f"Could not find elements by tag name ({cookie_filter.element})")
+        try:
+            return WebDriverWait(self.driver, cookie_filter.timeout).until(
+                ec.presence_of_all_elements_located((By.TAG_NAME, cookie_filter.element)),
+                message=f"Could not find elements by tag name ({cookie_filter.element})")
+        except TimeoutException:
+            return []
 
     def __presence_of_page_element_by_keywords_located__(self, search_by, cookie_filter):
         start_time = time.time()
@@ -99,9 +103,9 @@ class CookieScanner:
             for keyword in cookie_filter.keywords:
                 try:
                     return WebDriverWait(self.driver, cookie_filter.timeout - (time.time() - start_time)).until(
-                        ec.presence_of_element_located((search_by, keyword)),
+                        ec.presence_of_all_elements_located((search_by, keyword)),
                         message=f"Could not find elements by keyword ({keyword})")
-                except TimeoutError:
+                except TimeoutException:
                     continue
 
     def __get_page_elements_by_tag_name__(self, cookie_filter):

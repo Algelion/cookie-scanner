@@ -5,8 +5,10 @@ import pandas as pd
 from flask import Flask, jsonify, send_file, request
 from flask_cors import CORS
 
+from selenium.webdriver import Chrome
+
 from src.server.common import ResponseData, CookieFilter
-from src.server.scanner_process import CookieScannerProcess
+from src.server.cookie_scanner import CookieScanner
 
 
 class WebApplication:
@@ -31,32 +33,32 @@ class WebApplication:
         def static_file(path):
             return self.app.send_static_file(f'{path}')
 
-        @self.app.route('/cookie_scanner/api/v1/scan', methods=['GET'])
+        @self.app.route('/api/v1/scan', methods=['GET'])
         def scan():
             self.__scan__()
             return jsonify({'data': self.data}), 200
 
-        @self.app.route('/cookie_scanner/api/v1/start_scan', methods=['POST'])
+        @self.app.route('/api/v1/start_scan', methods=['POST'])
         def start_scan():
             return self.__start_scan__()
 
-        @self.app.route('/cookie_scanner/api/v1/abort_scan', methods=['GET'])
+        @self.app.route('/api/v1/abort_scan', methods=['GET'])
         def abort_scan():
             return self.__abort_scan__()
 
-        @self.app.route('/cookie_scanner/api/v1/scan_status', methods=['GET'])
+        @self.app.route('/api/v1/scan_status', methods=['GET'])
         def scan_status():
             return jsonify({'data': self.data}), 200
 
-        @self.app.route('/cookie_scanner/api/v1/upload_urls', methods=['POST'])
+        @self.app.route('/api/v1/upload_urls', methods=['POST'])
         def upload_urls():
             return self.__upload_urls__()
 
-        @self.app.route('/cookie-scanner/api/v1/upload_xlsx', methods=['POST'])
+        @self.app.route('/api/v1/upload_xlsx', methods=['POST'])
         def upload_xlsx():
             return self.__upload_xlsx__()
 
-        @self.app.route('/cookie_scanner/api/v1/download_xlsx', methods=['GET'])
+        @self.app.route('/api/v1/download_xlsx', methods=['GET'])
         def download_xlsx():
             return self.__download_xlsx__()
 
@@ -65,7 +67,7 @@ class WebApplication:
     def __scan__(self):
         page_urls = [data.url for data in self.data]
 
-        self.scanner = CookieScannerProcess()
+        self.scanner = CookieScanner(Chrome())
         self.scanner.start_scan(page_urls, self.search_filters)
         self.data = self.scanner.get_scan_status()
 
