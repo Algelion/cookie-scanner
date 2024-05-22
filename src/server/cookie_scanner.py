@@ -62,17 +62,31 @@ class CookieScanner:
         self.__update_result__(url, result)
 
     def __scan_page__(self, url):
+        print('[INFO] Scanning page:', url)
+
         for cookie_filter in self.filters:
             search_by = to_search_by(cookie_filter.attribute)
 
             page_elements = self.__get_page_elements__(search_by, cookie_filter)
             for page_element in page_elements:
-                text = page_element.get_attribute(cookie_filter.attribute)
-                if text and cookie_filter.is_in(text):
-                    message = f'Found {cookie_filter.provider} cookie banner'
-                    return SearchResult(url=url, provider=cookie_filter.provider, message=message, status='Done')
+
+                attributes = self.__get_all_attributes__(page_element)
+
+                for attr_name, attr_value in attributes.items():
+                    if ((attr_name and cookie_filter.is_in(attr_name))
+                            or (attr_value and cookie_filter.is_in(attr_value))):
+                        message = f'Found {cookie_filter.provider} cookie banner'
+                        return SearchResult(url=url, provider=cookie_filter.provider, message=message, status='Done')
 
         return SearchResult(url=url, provider='None', message='Nothing found', status='Done')
+
+    def __get_all_attributes__(self, element):
+        script = ("var items = {}; "
+                  "for (index = 0; index < arguments[0].attributes.length; ++index) {"
+                  "     items[arguments[0].attributes[index].name] = arguments[0].attributes[index].value "
+                  "}; "
+                  "return items;")
+        return self.driver.execute_script(script, element)
 
     def __get_page_elements__(self, search_by, cookie_filter):
         if cookie_filter.timeout > 0:
