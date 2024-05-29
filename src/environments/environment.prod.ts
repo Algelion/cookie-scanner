@@ -1,24 +1,27 @@
 export const environment = {
   production: true,
-  apiUrl: 'cookie_scanner/api/',
+  apiUrl: 'cookie_scanner/api',
   apiVersion: 'v1',
 
-  get apiDownloadUrl() {
-    return `${this.apiUrl}${this.apiVersion}/download/`;
+  get apiDownloadXlsxUrl() {
+    return `${this.apiUrl}/${this.apiVersion}/download_xlsx`;
   },
   get apiUploadUrl() {
-    return `${this.apiUrl}${this.apiVersion}/upload/`;
+    return `${this.apiUrl}/${this.apiVersion}/upload_urls`;
+  },
+  get apiUploadXlsx() {
+    return `${this.apiUrl}/${this.apiVersion}/upload_xlsx`;
   },
   get apiStartScanUrl() {
-    return `${this.apiUrl}${this.apiVersion}/start_scan/`;
+    return `${this.apiUrl}/${this.apiVersion}/start_scan`;
   },
   get apiStopScanUrl() {
-    return `${this.apiUrl}${this.apiVersion}/stop_scan/`;
+    return `${this.apiUrl}/${this.apiVersion}/stop_scan`;
   },
   get apiScanStatusUrl() {
-    return `${this.apiUrl}${this.apiVersion}/scan_status/`;
+    return `${this.apiUrl}/${this.apiVersion}/scan_status`;
   },
   get apiScanUrl() {
-    return `${this.apiUrl}${this.apiVersion}/scan/`;
+    return `${this.apiUrl}/${this.apiVersion}/scan`;
   },
 };

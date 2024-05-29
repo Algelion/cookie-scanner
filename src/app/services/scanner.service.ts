@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ScannerRowData } from "../shared/scanner-row-data";
 import { FiltersRowLoaderService } from "./filters-row-loader.service";
 import { FilterRowData } from "../shared/filter-row-data";
+import { environment } from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class ScannerService {
     formData.append('file', file);
 
     try {
-      const response: Response = await fetch('/api/v1/upload_xlsx', {
+      const response: Response = await fetch(environment.apiUploadXlsx, {
         method: 'POST',
         body: formData
       });
@@ -37,7 +38,7 @@ export class ScannerService {
     }
 
     try {
-      const response: Response = await fetch('/api/v1/upload_urls', {
+      const response: Response = await fetch(environment.apiUploadUrl, {
         method: 'POST',
         body: JSON.stringify({ data: urls }),
         headers: {
@@ -63,7 +64,7 @@ export class ScannerService {
       }
 
       const filtersData = filters.map(row => Object.fromEntries(row.fields.entries()));
-      const response: Response = await fetch('/api/v1/start_scan', {
+      const response: Response = await fetch(environment.apiStartScanUrl, {
         method: 'POST',
         body: JSON.stringify({ filters: filtersData }),
         headers: {
@@ -79,7 +80,7 @@ export class ScannerService {
 
   public readonly abortScan = async (): Promise<any> => {
     try {
-      const response: Response = await fetch('/api/v1/abort_scan', {
+      const response: Response = await fetch(environment.apiStopScanUrl, {
         method: 'GET'
       });
       return await this.handleResponse(response);
@@ -90,18 +91,7 @@ export class ScannerService {
 
   public readonly scan = async (): Promise<any> => {
     try {
-      const response: Response = await fetch('/api/v1/scan', {
-        method: 'GET'
-      });
-      return await this.handleResponse(response);
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  }
-
-  public readonly getScanStatus = async (): Promise<any> => {
-    try {
-      const response: Response = await fetch('/api/v1/scan_status', {
+      const response: Response = await fetch(environment.apiScanUrl, {
         method: 'GET'
       });
       return await this.handleResponse(response);

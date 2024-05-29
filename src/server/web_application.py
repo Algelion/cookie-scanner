@@ -10,6 +10,9 @@ from selenium.webdriver import Chrome
 from src.server.common import ResponseData, CookieFilter
 from src.server.cookie_scanner import CookieScanner
 
+from src.server.cookie_scanner import SCAN_URL, START_SCAN_URL, ABORT_SCAN_URL, UPLOAD_XLSX_URL, DOWNLOAD_XLSX_URL, \
+    UPLOAD_URLS_URL
+
 
 class WebApplication:
     def __init__(self, name: str, static_folder: str):
@@ -33,32 +36,28 @@ class WebApplication:
         def static_file(path):
             return self.app.send_static_file(f'{path}')
 
-        @self.app.route('/api/v1/scan', methods=['GET'])
+        @self.app.route(SCAN_URL, methods=['GET'])
         def scan():
             self.__scan__()
             return jsonify({'data': self.data}), 200
 
-        @self.app.route('/api/v1/start_scan', methods=['POST'])
+        @self.app.route(START_SCAN_URL, methods=['POST'])
         def start_scan():
             return self.__start_scan__()
 
-        @self.app.route('/api/v1/abort_scan', methods=['GET'])
+        @self.app.route(ABORT_SCAN_URL, methods=['GET'])
         def abort_scan():
             return self.__abort_scan__()
 
-        @self.app.route('/api/v1/scan_status', methods=['GET'])
-        def scan_status():
-            return jsonify({'data': self.data}), 200
-
-        @self.app.route('/api/v1/upload_urls', methods=['POST'])
+        @self.app.route(UPLOAD_URLS_URL, methods=['POST'])
         def upload_urls():
             return self.__upload_urls__()
 
-        @self.app.route('/api/v1/upload_xlsx', methods=['POST'])
+        @self.app.route(UPLOAD_XLSX_URL, methods=['POST'])
         def upload_xlsx():
             return self.__upload_xlsx__()
 
-        @self.app.route('/api/v1/download_xlsx', methods=['GET'])
+        @self.app.route(DOWNLOAD_XLSX_URL, methods=['GET'])
         def download_xlsx():
             return self.__download_xlsx__()
 

@@ -5,6 +5,7 @@ import { ScannerService } from "../../services/scanner.service";
 import { NavbarService } from "../../services/navbar.service";
 import { NavigationService } from "../../services/navigation.service";
 import { Subject, takeUntil } from "rxjs";
+import { environment } from "../../../environments/environment";
 
 @Component({
   selector: 'app-scanner-table',
@@ -49,7 +50,7 @@ export class ScannerTableComponent implements OnInit, OnDestroy {
       .subscribe(() => {
       console.log('test')
       const link: HTMLAnchorElement = document.createElement('a');
-      link.href = '/api/v1/download_xlsx';
+      link.href = environment.apiDownloadXlsx;
       link.click();
       link.remove();
     });
